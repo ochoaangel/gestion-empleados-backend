@@ -42,6 +42,10 @@ export const iniciarSesion = async (req: Request, res: Response) => {
       console.log(`Usuario no encontrado para el email: ${email}`);
       return res.status(401).json({ mensaje: 'Credenciales inválidas' });
     }
+    if (usuario.status === 'baja') {
+      console.log(`Usuario con estado de baja, no puede iniciar sesiòn`);
+      return res.status(401).json({ mensaje: 'Usuario de baja' });
+    }
 
     console.log('Usuario encontrado, verificando clave');
     const claveValida = await usuario.compararClave(clave);

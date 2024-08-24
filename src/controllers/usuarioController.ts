@@ -64,27 +64,33 @@ export const actualizarUsuario = async (req: Request, res: Response) => {
 
 export const eliminarUsuario = async (req: Request, res: Response) => {
   try {
-    const usuarioEliminado = await Usuario.findByIdAndDelete(req.params.id);
-    if (!usuarioEliminado) {
-      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+    if (req.usuario?.rol === 'empleado' || req.usuario?.rol === 'usuario') {
+      const usuarioActualizado = await Usuario.findByIdAndUpdate(
+        req.params.id,
+        { status: 'baja' },
+        { new: true }
+      );
+      if (!usuarioActualizado) {
+        return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+      }
+      return res.json({ mensaje: 'Usuario dado de baja exitosamente' });
     }
-    res.json({ mensaje: 'Usuario eliminado exitosamente' });
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al eliminar usuario', error });
+    res.status(500).json({ mensaje: 'Error al dar de baja al usuario', error });
   }
 };
 
-export const actualizarPerfilEmpleado = async (req: RequestConUsuario, res: Response) => {
+export const actualizarPerfilEmpleado = async (req: Request, res: Response) => {
   try {
     const { puestoTrabajo, status } = req.body;
-    if (!req.usuario || !req.usuario.id) {
-      return res.status(401).json({ mensaje: 'Usuario no autenticado' });
-    }
+    const userId = req.usuario?.rol === 'empleado' ? req.usuario.id : req.params.id;
+
     const usuarioActualizado = await Usuario.findByIdAndUpdate(
-      req.usuario.id,
+      userId,
       { puestoTrabajo, status },
       { new: true }
     );
+
     if (!usuarioActualizado) {
       return res.status(404).json({ mensaje: 'Usuario no encontrado' });
     }
