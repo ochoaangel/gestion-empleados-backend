@@ -1,0 +1,7 @@
+PORT=3000
+MONGODB_URI=mongodb://localhost:27017/gestion_empleados
+JWT_SECRET=mi_secreto_jwt_muy_seguro
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=ochoaangel@gmail.com
+SMTP_PASS=contraseña_de_correo
