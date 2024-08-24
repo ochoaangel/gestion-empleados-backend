@@ -4,14 +4,15 @@
   "type": "module",
   "description": "Gestion de empleados Backend",
   "main": "index.js",
-"scripts": {
-  "start": "node dist/server.js",
-  "dev": "nodemon src/server.ts",
-  "build": "tsc",
-  "lint": "eslint . --fix",
-  "format": "prettier --write \"src/**/*.ts\"",
-  "prepare": "husky install"
-},
+  "scripts": {
+    "start": "node dist/server.js",
+    "dev": "nodemon --exec ts-node-esm ./src/server.ts",
+    "build": "tsc",
+    "lint": "eslint . --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "prepare": "husky install",
+    "create-admin-user": "ts-node-esm src/scripts/crearUsuarioAdmin.ts"
+  },
   "keywords": [],
   "author": "ochoaangel@gmail.com",
   "license": "ISC",
@@ -32,10 +33,7 @@
     "eslint": "^9.9.1",
     "husky": "^9.1.5",
     "lint-staged": "^15.2.9",
-    "nodemon": "^3.1.4",
-    "prettier": "^3.3.3",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
+    "prettier": "^3.3.3"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -46,8 +44,10 @@
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.4",
+    "mongoose-paginate-v2": "^1.8.3",
     "nodemailer": "^6.9.14",
     "swagger-ui-express": "^5.0.1",
+    "tsconfig-paths": "^4.2.0",
     "yamljs": "^0.3.0"
   },
   "lint-staged": {
