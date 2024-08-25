@@ -24,7 +24,7 @@ export const enviarCorreo = async (para: string, asunto: string, contenido: stri
         }
       ]
     });
-    console.log('Correo enviado exitosamente');
+    //   console.log('Correo enviado exitosamente');
   } catch (error) {
     console.error('Error al enviar correo:', error);
   }

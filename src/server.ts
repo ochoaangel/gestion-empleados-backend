@@ -10,8 +10,8 @@ const iniciarServidor = async () => {
   try {
     await conectarBaseDeDatos();
     app.listen(PORT, () => {
-      console.log(`Servidor corriendo en el puerto ${PORT}`);
-      console.log(`Swagger UI disponible en http://localhost:${PORT}/api-docs`);
+        console.log(`Servidor corriendo en el puerto ${PORT}`);
+        console.log(`Swagger UI disponible en http://localhost:${PORT}/api-docs`);
     });
   } catch (error) {
     console.error('Error al iniciar el servidor:', error);

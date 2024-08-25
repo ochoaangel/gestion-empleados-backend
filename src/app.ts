@@ -16,7 +16,7 @@ app.use(cors());
 app.use(helmet());
 app.use(express.json());
 
-console.log('Configurando rutas principales');
+//   console.log('Configurando rutas principales');
 
 // Rutas
 app.use('/api/usuarios', usuarioRoutes);

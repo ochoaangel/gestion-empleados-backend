@@ -58,29 +58,29 @@ export const registrar = async (req: Request, res: Response) => {
 };
 
 export const iniciarSesion = async (req: Request, res: Response) => {
-  console.log('Iniciando proceso de login');
+  //   console.log('Iniciando proceso de login');
   try {
     const { email, clave } = req.body;
-    console.log(`Intento de login para el email: ${email}`);
+    //   console.log(`Intento de login para el email: ${email}`);
 
     const usuario = await Usuario.findOne({ email });
     if (!usuario) {
-      console.log(`Usuario no encontrado para el email: ${email}`);
+      //   console.log(`Usuario no encontrado para el email: ${email}`);
       return res.status(401).json({ mensaje: 'Credenciales inválidas' });
     }
     if (usuario.status === 'baja') {
-      console.log(`Usuario con estado de baja, no puede iniciar sesiòn`);
+      //   console.log(`Usuario con estado de baja, no puede iniciar sesiòn`);
       return res.status(401).json({ mensaje: 'Usuario de baja' });
     }
 
-    console.log('Usuario encontrado, verificando clave');
+    //   console.log('Usuario encontrado, verificando clave');
     const claveValida = await usuario.compararClave(clave);
     if (!claveValida) {
-      console.log('Clave incorrecta');
+      //   console.log('Clave incorrecta');
       return res.status(401).json({ mensaje: 'Credenciales inválidas' });
     }
 
-    console.log('Clave correcta, generando token');
+    //   console.log('Clave correcta, generando token');
     const token = jwt.sign(
       { 
         id: usuario._id, 
@@ -91,7 +91,7 @@ export const iniciarSesion = async (req: Request, res: Response) => {
       { expiresIn: '1h' }
     );
 
-    console.log('Login exitoso');
+    //   console.log('Login exitoso');
     res.json({ token, rol: usuario.rol });
   } catch (error) {
     console.error('Error en el proceso de login:', error);

@@ -26,6 +26,7 @@ export const autenticar = (req: Request, res: Response, next: NextFunction) => {
     (req as any).usuario = decoded;
     next();
   } catch (error) {
+    console.error(error);
     res.status(401).json({ mensaje: 'Token inválido' });
   }
 };

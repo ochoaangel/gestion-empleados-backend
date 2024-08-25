@@ -24,9 +24,9 @@ const crearUsuarioAdmin = async () => {
       });
 
       await nuevoAdmin.save();
-      console.log('Usuario administrador creado exitosamente');
+      //   console.log('Usuario administrador creado exitosamente');
     } else {
-      console.log('El usuario administrador ya existe');
+      //   console.log('El usuario administrador ya existe');
     }
 
     process.exit(0);

@@ -1,12 +1,5 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import Usuario from '../models/Usuario.js';
-
-interface RequestConUsuario extends Request {
-  usuario?: {
-    id: string;
-    rol: string;
-  };
-}
 
 export const obtenerUsuarios = async (req: Request, res: Response) => {
   try {
