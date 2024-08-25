@@ -8,6 +8,6 @@ LOGIN_ADMIN_PASS=ochoaangel@gmail.com
 JWT_SECRET=mi_secreto_jwt_muy_seguro
 
 SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
+SMTP_PORT=465
 SMTP_USER=ochoaangel@gmail.com
-SMTP_PASS=contraseña_de_correo
+SMTP_PASS=contrasena_de_aplicacion_de_gmail

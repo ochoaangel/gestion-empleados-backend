@@ -1,12 +1,21 @@
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import Usuario from '../models/Usuario.js';
-import { enviarCorreo } from '../utils/correo.js';
+import { enviarCorreo } from '../services/emailService.js';
 import { generarClaveAleatoria } from '../utils/generadores.js';
+import { generarPDF } from '../services/pdfService.js';
+
 
 export const registrar = async (req: Request, res: Response) => {
   try {
     const { email, nombre, apellido, fechaNacimiento, puestoTrabajo, tipoContrato, fechaInicioContrato } = req.body;
+
+    // Verificar si el usuario ya existe
+    const usuarioExistente = await Usuario.findOne({ email });
+    if (usuarioExistente) {
+      return res.status(400).json({ mensaje: 'El usuario ya existe' });
+    }
+
     const claveGenerada = generarClaveAleatoria();
 
     const nuevoUsuario = new Usuario({
@@ -23,11 +32,28 @@ export const registrar = async (req: Request, res: Response) => {
 
     await nuevoUsuario.save();
 
-    await enviarCorreo(email, 'Bienvenido a la empresa', `Tu usuario es: ${email} y tu clave temporal es: ${claveGenerada}`);
+    // Generar PDF
+    const pdfData = await generarPDF({ email, nombre, apellido, fechaNacimiento, puestoTrabajo, tipoContrato, fechaInicioContrato });
+
+    // Contenido del correo
+    const contenidoCorreo = `
+      <p>Estimado/a ${nombre} ${apellido},</p>
+      <p>Nos complace darle la bienvenida a nuestra empresa. A continuación, encontrará las credenciales para iniciar sesión en su nueva cuenta en nuestra empresa:</p>
+      <ul>
+        <li><strong>Usuario:</strong> ${email}</li>
+        <li><strong>Clave inicial:</strong> ${claveGenerada}</li>
+      </ul>
+      <p>Adjunto encontrará su carta de contratación con más detalles.</p>
+      <p>Atentamente,</p>
+      <p><strong>El equipo de Recursos Humanos</strong></p>
+    `;
+
+    // Enviar correo con PDF adjunto
+    await enviarCorreo(email, 'Bienvenido a la empresa', contenidoCorreo, pdfData);
 
     res.status(201).json({ mensaje: 'Usuario registrado exitosamente' });
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al registrar usuario', error });
+    res.status(500).json({ mensaje: 'Error al registrar usuario' });
   }
 };
 
