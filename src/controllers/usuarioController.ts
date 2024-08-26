@@ -1,13 +1,14 @@
 import type { Request, Response } from 'express';
 import Usuario from '../models/Usuario.js';
 
+
 export const obtenerUsuarios = async (req: Request, res: Response) => {
   try {
-    const { pagina = 1, limite = 10, busqueda, ...filtros } = req.query;
+    const { pagina = 1, limite = 10, busqueda, sortField = 'fechaRegistro', sortOrder = 'desc', ...filtros } = req.query;
     const opciones = {
       page: Number(pagina),
       limit: Number(limite),
-      sort: { fechaRegistro: -1 } 
+      sort: { [sortField as string]: sortOrder === 'asc' ? 1 : -1 }
     };
 
     let query: any = {};
@@ -21,13 +22,14 @@ export const obtenerUsuarios = async (req: Request, res: Response) => {
     }
 
     Object.keys(filtros).forEach(key => {
-      query[key] = filtros[key];
+      query[key] = filtros[key]; 
     });
 
     const usuarios = await Usuario.paginate(query, opciones);
     res.json(usuarios);
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al obtener usuarios', error });
+    console.log('Error: '+error)
+    res.status(500).json({ mensaje: 'Error al obtener usuarios' });
   }
 };
 
